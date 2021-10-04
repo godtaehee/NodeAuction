@@ -13,6 +13,8 @@ import indexRouter from "./routes";
 import authRouter from "./routes/auth";
 import { sequelize } from "./models";
 import passportConfig from "./passport";
+import sse from "./sse";
+import webSocket from "./socket";
 
 const app = express();
 passportConfig();
@@ -67,6 +69,9 @@ app.use((err, req, res, next) => {
   res.render("error");
 });
 
-app.listen(8000, () => {
+const server = app.listen(8000, () => {
   console.log(`http://localhost:3000`);
 });
+
+webSocket(server, app);
+sse(server);
